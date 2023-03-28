@@ -40,11 +40,11 @@ async function getChannelVideosCount(channelId) {
 async function sendEmail() {
   console.log("Sending Email ...");
   await transporter.sendMail({
-    from: "root <info@moonde.ir>",
+    from: "Amin Rezaei <info@moonde.ir>",
     to: "aminrezaei@proton.me",
     subject: "ویدو جدید بیت پین آپلود شد",
-    html: `<div href="https://www.youtube.com/@bitpin/shorts" target="_blank">
-    <a>ویدو جدید از کانال آپلود شد</a>
+    html: `<div>
+    <a href="https://www.youtube.com/@bitpin/shorts" target="_blank">ویدو جدید از کانال آپلود شد</a>
     </div>`,
   });
   console.log("Email ✔✔v✔✔");
