@@ -37,13 +37,15 @@ async function getChannelVideosCount(channelId) {
   return videoCount;
 }
 
-async function sendEmail(totalVideos) {
+async function sendEmail() {
   console.log("Sending Email ...");
   await transporter.sendMail({
     from: "root <info@moonde.ir>",
     to: "aminrezaei@proton.me",
-    subject: "Policy has been changed",
-    html: `<h1>تعداد ویدو ها: ${totalVideos} </h1>`,
+    subject: "ویدو جدید بیت پین آپلود شد",
+    html: `<div href="https://www.youtube.com/@bitpin/shorts" target="_blank">
+    <a>ویدو جدید از کانال آپلود شد</a>
+    </div>`,
   });
   console.log("Email ✔✔v✔✔");
   return true;
@@ -55,7 +57,7 @@ async function run() {
   console.log(`Videos: ${totalVideos}`);
   if (totalVideos > minVidCount) {
     minVidCount++;
-    await sendEmail(totalVideos);
+    await sendEmail();
   }
 }
 
