@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js"
   },
+  "type": "commonjs",
   "keywords": [],
   "author": "Amin Rezaei",
   "license": "ISC",
