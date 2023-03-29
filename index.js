@@ -2,6 +2,7 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const cron = require("node-cron");
+const Slimbot = require("slimbot");
 
 const YT_API_KEY = process.env.YT_API_KEY;
 const CHANNEL_ID = process.env.CHANNEL_ID;
@@ -11,7 +12,15 @@ const MAIL_PORT = process.env.MAIL_PORT;
 const MAIL_USER = process.env.MAIL_USER;
 const MAIL_PASSWORD = process.env.MAIL_PASSWORD;
 
+const TELEGRAM_BOT_API = process.env.TELEGRAM_BOT_API;
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+
 let minVidCount = process.env.MIN_VID_COUNT;
+
+const telegramMessage = "https://www.youtube.com/@bitpin/shorts";
+const emailMessage = `<div>
+<a href="https://www.youtube.com/@bitpin/shorts" target="_blank">ویدو جدید از کانال آپلود شد</a>
+</div>`;
 
 const youtube = google.youtube({
   version: "v3",
@@ -28,6 +37,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const slimbot = new Slimbot(TELEGRAM_BOT_API);
+
 async function getChannelVideosCount(channelId) {
   const res = await youtube.channels.list({
     part: "statistics",
@@ -37,30 +48,33 @@ async function getChannelVideosCount(channelId) {
   return videoCount;
 }
 
-async function sendEmail() {
+function sendTelegram() {
+  console.log("Sending Telegram Message ...");
+  slimbot.sendMessage(TELEGRAM_CHAT_ID, telegramMessage);
+  console.log("------------- Telegram ✔✔✔✔ -------------");
+}
+
+function sendEmail() {
   console.log("Sending Email ...");
-  await transporter.sendMail({
+  transporter.sendMail({
     from: "Amin Rezaei <info@moonde.ir>",
     to: "aminrezaei@proton.me",
     subject: "ویدو جدید بیت پین آپلود شد",
-    html: `<div>
-    <a href="https://www.youtube.com/@bitpin/shorts" target="_blank">ویدو جدید از کانال آپلود شد</a>
-    </div>`,
+    html: emailMessage,
   });
-  console.log("Email ✔✔v✔✔");
-  return true;
+  console.log("------------- Email    ✔✔✔✔ -------------");
 }
 
 async function run() {
-  console.log("... Tick ...");
   const totalVideos = await getChannelVideosCount(CHANNEL_ID);
-  console.log(`Videos: ${totalVideos}`);
+  console.log(`.... Videos: ${totalVideos} ....`);
   if (totalVideos > minVidCount) {
     minVidCount++;
-    await sendEmail();
+    sendEmail();
+    sendTelegram();
   }
 }
 
-console.log("Starting ...");
-
+console.log("########## Starting ... ##########");
+slimbot.startPolling();
 cron.schedule("*/1 * * * * *", run);

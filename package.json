@@ -13,6 +13,7 @@
     "dotenv": "^16.0.3",
     "googleapis": "^114.0.0",
     "node-cron": "^3.0.2",
-    "nodemailer": "^6.9.1"
+    "nodemailer": "^6.9.1",
+    "slimbot": "^5.1.0"
   }
 }
