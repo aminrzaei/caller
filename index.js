@@ -77,4 +77,4 @@ async function run() {
 
 console.log("########## Starting ... ##########");
 slimbot.startPolling();
-cron.schedule("*/1 * * * * *", run);
+cron.schedule("*/5 * * * * *", run);
