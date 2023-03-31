@@ -7,3 +7,4 @@
 1. `googleapis`: Official google api SDK helping getting channel info.
 2. `node-cron`: Node.js cronjob.
 3. `nodemailer`: Node.js email service handler.
+4. `slimbot`: Telegram bot api handler.
